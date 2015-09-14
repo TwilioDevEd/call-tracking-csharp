@@ -121,6 +121,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509141700145_CreateDatabase.cs" />
+    <Compile Include="Migrations\201509141700145_CreateDatabase.Designer.cs">
+      <DependentUpon>201509141700145_CreateDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CallTrackingContext.cs" />
     <Compile Include="Models\Lead.cs" />
@@ -173,6 +177,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201509141700145_CreateDatabase.resx">
+      <DependentUpon>201509141700145_CreateDatabase.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
