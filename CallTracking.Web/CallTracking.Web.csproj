@@ -129,6 +129,9 @@
     <Compile Include="Models\CallTrackingContext.cs" />
     <Compile Include="Models\Lead.cs" />
     <Compile Include="Models\LeadSource.cs" />
+    <Compile Include="Models\Repository\IRepository.cs" />
+    <Compile Include="Models\Repository\LeadSourcesRepository.cs" />
+    <Compile Include="Models\Repository\LeadsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
