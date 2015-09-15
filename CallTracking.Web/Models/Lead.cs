@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CallTracking.Web.Models
+﻿namespace CallTracking.Web.Models
 {
     public class Lead
     {

@@ -9,6 +9,7 @@ namespace CallTracking.Web.Models
         public string Name { get; set; }
         public string IncomingNumberNational { get; set; }
         public string IncomingNumberInternational { get; set; }
+        [Display(Name = "Forwarding Number")]
         public string ForwardingNumber { get; set; }
         public virtual IList<Lead> Leads { get; set; }
     }

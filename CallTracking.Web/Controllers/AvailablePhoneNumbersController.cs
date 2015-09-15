@@ -6,11 +6,21 @@ namespace CallTracking.Web.Controllers
 {
     public class AvailablePhoneNumbersController : Controller
     {
+        private readonly IRestClient _restClient;
+
+        public AvailablePhoneNumbersController()
+            : this(new RestClient(new TwilioRestClient(Credentials.TwilioAccountSid, Credentials.TwilioAuthToken)))
+        {}
+
+        public AvailablePhoneNumbersController(IRestClient restClient)
+        {
+            _restClient = restClient;
+        }
+
         // GET: AvailablePhoneNumbers
         public ActionResult Index(string areaCode)
         {
-            var client = new TwilioRestClient(Credentials.TwilioAccountSid, Credentials.TwilioAuthToken);
-            var phoneNumbers = new RestClient(client).SearchPhoneNumbers();
+            var phoneNumbers = _restClient.SearchPhoneNumbers(areaCode);
 
             return View(phoneNumbers);
         }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Twilio.AvailablePhoneNumber>
+﻿@using CallTracking.Web.Extensions
+@model IEnumerable<Twilio.AvailablePhoneNumber>
 
 <div class="row">
     <div class="col-md-6">
@@ -9,7 +10,7 @@
             The number you choose will be used to create a Lead Source. On the next page, you will set a name and forwarding number for this lead source.
         </p>
 
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Phone Number</th>
@@ -21,7 +22,9 @@
             {
                 <tr>
                     <td>@phoneNumber.FriendlyName</td>
-                    <td>Purchase</td>
+                    <td>
+                        @Html.PostLink("Purchase", "create", "leadsources", new {phoneNumber = @phoneNumber.PhoneNumber}, new {@class = "btn btn-primary btn-xs"})
+                    </td>
                 </tr>
             }
             </tbody>

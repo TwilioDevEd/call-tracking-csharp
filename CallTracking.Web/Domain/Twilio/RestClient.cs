@@ -3,7 +3,13 @@ using Twilio;
 
 namespace CallTracking.Web.Domain.Twilio
 {
-    public class RestClient
+    public interface IRestClient
+    {
+        IEnumerable<AvailablePhoneNumber> SearchPhoneNumbers(string areaCode);
+        IncomingPhoneNumber PurchasePhoneNumber(string phoneNumber, string applicationSid);
+    }
+
+    public class RestClient : IRestClient
     {
         private readonly TwilioRestClient _client;
 

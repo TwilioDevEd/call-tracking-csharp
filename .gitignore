@@ -206,4 +206,4 @@ FakesAssemblies/
 *.opt
 
 # Project specific options
-Web.config
+CallTracking.Web/Web.config

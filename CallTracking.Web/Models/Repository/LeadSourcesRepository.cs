@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace CallTracking.Web.Models.Repository
@@ -14,9 +15,11 @@ namespace CallTracking.Web.Models.Repository
             _context.SaveChanges();
         }
 
-        public void Update(LeadSource entity)
+        public void Update(LeadSource leadSource)
         {
-            throw new NotImplementedException();
+            
+            _context.Entry(leadSource).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public LeadSource FirstOrDefault(Func<LeadSource, bool> predicate)

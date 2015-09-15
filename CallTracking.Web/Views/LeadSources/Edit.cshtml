@@ -1,0 +1,34 @@
+﻿@model CallTracking.Web.Models.LeadSource
+
+<div class="row">
+    <div class="page-header">
+        <h1>Edit lead source for @Model.IncomingNumberNational</h1>
+    </div>
+    <div class="col-md-9">
+        @using (Html.BeginForm("Edit", "LeadSources", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+        {
+            <div class="form-group">
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.IncomingNumberNational)
+                @Html.HiddenFor(x => x.IncomingNumberInternational)
+                @Html.LabelFor(x => x.Name, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.TextBoxFor(x => x.Name, new {@class = "form-control"})
+                    <p class="help-block">E.g. "Downtown billboard"</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.ForwardingNumber, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(x => x.ForwardingNumber, new { @class = "form-control" })
+                    <p class="help-block">People who call this lead source will be connected with this phone number. Must include international prefix - e.g. +1 555 555 55555</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" value="Update lead source" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
