@@ -4,8 +4,8 @@ namespace CallTracking.Web.Domain.Twilio
 {
     public static class Credentials
     {
-        public static string AccountSid = WebConfigurationManager.AppSettings["AccountSid"];
-        public static string AuthToken = WebConfigurationManager.AppSettings["AuthToken"];
-        public static string ApplicationSid = WebConfigurationManager.AppSettings["ApplicationSid"];
+        public static string TwilioAccountSid = WebConfigurationManager.AppSettings["TwilioAccountSid"];
+        public static string TwilioAuthToken = WebConfigurationManager.AppSettings["TwilioAuthToken"];
+        public static string TwiMLApplicationSid = WebConfigurationManager.AppSettings["TwiMLApplicationSid"];
     }
 }
