@@ -99,6 +99,7 @@
     <Compile Include="Controllers\DashboardControllerTest.cs" />
     <Compile Include="Controllers\LeadSourcesControllerTest.cs" />
     <Compile Include="Controllers\MockContext.cs" />
+    <Compile Include="Controllers\StatisticsControllerTest.cs" />
     <Compile Include="Domain\Twilio\RestClientTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
