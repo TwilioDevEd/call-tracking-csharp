@@ -67,7 +67,7 @@ namespace CallTracking.Web.Test.Controllers
             var controller = GetLeadSourcesController(_mockRepository.Object, _mockRestClient.Object);
             var result = (RedirectToRouteResult)controller.Edit(new LeadSource());
 
-            Assert.That(result.RouteValues["controller"], Is.EqualTo("Home"));
+            Assert.That(result.RouteValues["controller"], Is.EqualTo("Dashboard"));
             Assert.That(result.RouteValues["action"], Is.EqualTo("Index"));
         }
 

@@ -65,7 +65,7 @@ namespace CallTracking.Web.Controllers
             if (ModelState.IsValid)
             {
                 _repository.Update(leadSource);
-                return RedirectToAction("Index", new { Controller = "Home" });
+                return RedirectToAction("Index", new { Controller = "Dashboard" });
             }
 
             return View(leadSource);
