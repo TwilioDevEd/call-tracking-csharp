@@ -21,7 +21,7 @@ namespace CallTracking.Web.Controllers
         public ActionResult LeadsBySource()
         {
             var leads = _leadsRepository.All().Select(x => new {x.LeadSource.Name});
-            var response = leads.GroupBy(x => x.Name).Select(group => new {Label = group.Key, Value = group.Count()}).ToList();
+            var response = leads.GroupBy(x => x.Name).Select(group => new {label = group.Key, value = group.Count()}).ToList();
 
             return Json(response, JsonRequestBehavior.AllowGet);
         }
@@ -29,7 +29,7 @@ namespace CallTracking.Web.Controllers
         // GET: Statistics/LeadsByCity
         public ActionResult LeadsByCity()
         {
-            var response = _leadsRepository.All().GroupBy(x => x.City).Select(group => new { Label = group.Key, Value = group.Count() });
+            var response = _leadsRepository.All().GroupBy(x => x.City).Select(group => new { label = group.Key, value = group.Count() });
             return Json(response, JsonRequestBehavior.AllowGet);
         }
     }
