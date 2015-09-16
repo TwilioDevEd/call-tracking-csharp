@@ -1,0 +1,253 @@
+.chapter(data-title='Call Tracking with Twilio and Ruby on Rails')
+  .step(data-file='CallTracking.Web/packages.config')
+    :markdown
+      ## What does this thing do?
+
+      This [ASP.NET MVC](http://www.asp.net/mvc) web application shows how you can
+      use Twilio to track the effectiveness of different marketing channels.
+
+      ![Call tracking home page](http://howtodocs.s3.amazonaws.com/call-tracking-home.png)
+
+      This application has three main features:
+
+      * It purchases phone numbers from Twilio to use in different marketing
+      campaigns (like a billboard or a bus advertisement)
+      * It forwards incoming calls for those phone numbers to a salesperson
+      * It displays charts showing data about the phone numbers and the calls
+      they receive
+
+      In this tutorial, we'll point out the key bits of code that make this
+      application work.
+      [Check out the project README on
+      GitHub](https://github.com/twiliodeved/call-tracking-csharp)
+      to see how to run the code yourself.
+
+      Let's get started! Click the right arrow above to advance to the next
+      code snippet.
+
+      ---
+
+      **See also:**
+
+      * [Twilio C# Helper Library](https://github.com/twilio/twilio-csharp)
+      * [Twilio REST API docs](https://www.twilio.com/docs/api)
+      * [Documentation for ASP.NET
+      MVC](https://msdn.microsoft.com/en-us/library/gg416514.aspx)
+      * [What is Call Tracking?](http://www.searchenginejournal.com/seo-beginner-guide-call-tracking-care/83173/)
+
+  .step(data-file='CallTracking.Web/Domain/Twilio/RestClient.cs',
+  data-highlight='21-30')
+    :markdown
+      ## Search for available phone numbers
+
+      Call tracking requires us to search for and buy phone numbers on demand,
+      associating a specific phone number with a lead source. This class
+      uses the [Twilio C# Helper
+      Library](https://www.twilio.com/docs/csharp/install)
+      to search for phone numbers by area code and return a list of numbers
+      that are available for purchase.
+
+      ---
+
+      **See also:**
+
+      * [Twilio C# Helper Library
+      basics](https://www.twilio.com/docs/csharp/install)
+      * [Searching for and buying numbers in
+      twilio-ruby](http://twilio-ruby.readthedocs.org/en/latest/usage/phone-numbers.html#searching-and-buying-a-number)
+      * [Twilio REST API: Available Phone Numbers](https://www.twilio.com/docs/api/rest/available-phone-numbers)
+
+  .step(data-file='CallTracking.Web/Controllers/AvailablePhoneNumbersController.cs',
+  data-highlight='20-26')
+    :markdown
+      ## Display available phone numbers
+
+      We display a form to the user on the app's home page which allows them to
+      search for a new phone number by area code. At controller level we use the
+      `Twilio.RestClient` we created earlier to actually search for numbers. This
+      will render the view that contains a list of numbers they can choose to buy.
+
+      ---
+
+      **See also:**
+
+      * [ASP.NET MVC Controller
+      Overview](http://www.asp.net/mvc/overview/older-versions-1/controllers-and-routing/aspnet-mvc-controllers-overview-cs)
+      * [Phone Number Search
+      API](https://www.twilio.com/docs/howto/search-and-buy)
+      * [Twilio.Api
+      Wiki](https://github.com/twilio/twilio-csharp/wiki/Twilio.Api)
+
+
+  .step(data-file='CallTracking.Web/Domain/Twilio/RestClient.cs',
+  data-highlight='32-43')
+    :markdown
+      ## Buy a phone number
+
+      Our `PurchasePhoneNumber` method takes a phone number as its
+      sole parameter and uses our Twilio API client to purchase the
+      available phone number our user chooses.
+
+      ---
+
+      **See also:**
+
+      * [Phone Number Search
+      API](https://www.twilio.com/docs/howto/search-and-buy)
+      * [Twilio REST API: Available Phone Numbers](https://www.twilio.com/docs/api/rest/available-phone-numbers)
+      * [Twilio.Api
+      Wiki](https://github.com/twilio/twilio-csharp/wiki/Twilio.Api)
+
+  .step(data-file='CallTracking.Web/Domain/Twilio/RestClient.cs',
+  data-highlight='32-41')
+    :markdown
+      ## Set webhook URLs in a TwiML Application
+
+      When we purchase a phone number, we specify a voice application SID. This is
+      an identifier for a [TwiML application](https://www.twilio.com/help/faq/twilio-client/how-do-i-create-a-twiml-app),
+      which you can create through the [REST API](https://www.twilio.com/docs/api/rest/applications)
+      or [account portal](https://www.twilio.com/user/account/apps).
+
+      ![Creating a TwiML app](http://howtodocs.s3.amazonaws.com/call-tracking-twiml-app.gif)
+
+  .step(data-file='CallTracking.Web/Controllers/LeadSourcesController.cs',
+  data-highlight='25-41')
+    :markdown
+      ## Associate a phone number with a lead source
+
+      Once we search for and buy a Twilio number, we need to associate it with a
+      lead source in our database. This is the core of a call tracking application.
+      Any phone calls to our new Twilio number will be attributed to this source.
+
+      ---
+
+      **See also:**
+
+      * [Controller.RedirectToAction Method](https://msdn.microsoft.com/en-us/library/system.web.mvc.controller.redirecttoaction.aspx)
+
+  .step(data-file='CallTracking.Web/Models/LeadSource.cs', data-highlight='6-15')
+    :markdown
+      ## The LeadSource model
+
+      The `LeadSource` model associates a Twilio number to a named lead source
+      (like "Wall Street Journal Ad" or "Dancing guy with sign"). It also tracks
+      a phone number to which we'd like all the calls redirected, like your sales
+      or support help line.
+
+      ---
+
+      **See also:**
+
+      * [Code First to a Database](https://msdn.microsoft.com/en-us/data/jj193542.aspx)
+      * [Adding a
+      Model](http://www.asp.net/mvc/overview/older-versions/getting-started-with-aspnet-mvc4/adding-a-model)
+      * [Getting Started with Entity Framework 6 Code First using MVC
+      5](https://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application)
+
+  .step(data-file='CallTracking.Web/Models/Lead.cs', data-highlight='3-11')
+    :markdown
+      ## The Lead model
+
+      A `Lead` represents a phone call generated by a `LeadSource`. Each time
+      somebody calls a phone number associated with a `LeadSource`, we'll use the `Lead` model to
+      record some of the [data Twilio gives us](https://www.twilio.com/docs/api/twiml/twilio_request) 
+      about their call.
+
+      ---
+
+      **See also:**
+
+      * [Code First to a Database](https://msdn.microsoft.com/en-us/data/jj193542.aspx)
+      * [Adding a
+      Model](http://www.asp.net/mvc/overview/older-versions/getting-started-with-aspnet-mvc4/adding-a-model)
+      * [Getting Started with Entity Framework 6 Code First using MVC
+      5](https://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application)
+
+  .step(data-file='CallTracking.Web/Controllers/CallTrackingController.cs',
+  data-highlight='23-39')
+    :markdown
+      ## Forward calls and create leads
+
+      Whenever a customer calls one of our Twilio numbers, Twilio will send a POST 
+      request to the URL associated with this action (should be
+      `/CallTracking/ForwardCall`).
+
+      We use the incoming call data to create a new `Lead` for a `LeadSource`,
+      then return [TwiML](https://www.twilio.com/docs/api/twiml) that connects our caller
+      with the `ForwardingNumber` of our `LeadSource`.
+
+      ---
+
+      **See also:**
+
+      * [Twilio voice request parameters](https://www.twilio.com/docs/api/twiml/twilio_request)
+      * [Twilio for .NET
+      Developers](https://www.twilio.com/blog/2012/01/twilio-for-net-developers-part-1-introducing-the-twilio-helper-libraries.html)
+      * [Twilio.TwiML](https://github.com/twilio/twilio-csharp/wiki/Twilio.TwiML)
+      * [TwiML <Dial> verb](https://www.twilio.com/docs/api/twiml/dial)
+
+  .step(data-file='CallTracking.Web/Controllers/StatisticsController.cs',
+  data-highlight='20-27')
+    :markdown
+      ## Get statistics about our lead sources
+
+      One useful statistic we can get from our data is how many calls each
+      `LeadSource` has received. We use
+      [LINQ](https://msdn.microsoft.com/en-us/library/bb397926.aspx) to make a
+      list containing each `LeadSource` and a count of its `Lead` models.
+
+      ---
+
+      **See also:**
+
+      * [LINQ](https://msdn.microsoft.com/en-us/library/bb397926.aspx)
+      * [Group Elements in a
+      Sequence](https://msdn.microsoft.com/en-us/library/vstudio/bb386922.aspx)
+
+  .step(data-file='CallTracking.Web/Scripts/call-tracking.js')
+    :markdown
+      ## Visualize our statistics with Chart.js
+
+      Back on the home page, we fetch call tracking statistics
+      [in JSON from the
+      server](https://msdn.microsoft.com/en-us/library/system.web.mvc.jsonresult.aspx)
+      using [jQuery](https://api.jquery.com/jquery.get/).
+      We display the stats in colorful pie charts we create with [Chart.js](http://www.chartjs.org/). 
+
+      ![Call tracking charts](http://howtodocs.s3.amazonaws.com/call-tracking-charts.png)
+
+      ---
+
+      **See also:**
+
+      * [Chart.js](http://www.chartjs.org/)
+      * [JsonResult
+      Class](https://msdn.microsoft.com/en-us/library/system.web.mvc.jsonresult.aspx)
+
+  .step(data-file='CallTracking.Web/Scripts/call-tracking.js')
+    :markdown
+      ## Where to next?
+
+      That's it! Our ASP.NET MVC application is now ready to purchase new phone
+      numbers, forward incoming calls, and record some statistics for our
+      business.
+
+      If you're a C# developer working with Twilio, you might also enjoy these
+      tutorials:
+
+      [**Automated Survey
+      (C#)**](https://www.twilio.com/docs/howto/walkthrough/automated-survey/csharp/mvc)
+
+      Instantly collect structured data from your users with a survey conducted
+      over a voice call or SMS text messages.
+
+      [**Appointment Reminders
+      (C#)**](https://www.twilio.com/docs/howto/walkthrough/appointment-reminders/csharp/mvc)
+
+      Learn to implement appointment reminders in your web app with Twilio.
+      Appointment reminders allow you to automate the process of reaching out to
+      your customers in advance of an upcoming appointment.
+
+      Thanks for checking out this tutorial! If you have any feedback to share
+      with us, we'd love to hear it. Tweet [@twilio](https://twitter.com/twilio)
+      to let us know what you think.
