@@ -26,9 +26,8 @@ namespace CallTracking.Web.Controllers
         [HttpPost]
         public ActionResult Create(string phoneNumber)
         {
-            
-            var client = new TwilioRestClient(Credentials.TwilioAccountSid, Credentials.TwilioAuthToken);
-            var twilioNumber = _restClient.PurchasePhoneNumber(phoneNumber, Credentials.TwiMLApplicationSid);
+            var twilMLApplicationSid = Credentials.TwiMLApplicationSid ?? _restClient.GetApplicationSid();
+            var twilioNumber = _restClient.PurchasePhoneNumber(phoneNumber, twilMLApplicationSid);
             var leadSource = new LeadSource
             {
                 IncomingNumberNational = twilioNumber.FriendlyName,
