@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using CallTracking.Web.Domain.Twilio;
-using Twilio;
 
 namespace CallTracking.Web.Controllers
 {
@@ -9,7 +8,7 @@ namespace CallTracking.Web.Controllers
         private readonly IRestClient _restClient;
 
         public AvailablePhoneNumbersController()
-            : this(new RestClient(new TwilioRestClient(Credentials.TwilioAccountSid, Credentials.TwilioAuthToken)))
+            : this(new RestClient())
         {}
 
         public AvailablePhoneNumbersController(IRestClient restClient)

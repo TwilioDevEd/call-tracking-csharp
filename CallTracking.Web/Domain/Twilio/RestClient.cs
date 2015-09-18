@@ -15,6 +15,11 @@ namespace CallTracking.Web.Domain.Twilio
     {
         private readonly TwilioRestClient _client;
 
+        public RestClient()
+        {
+            _client = new TwilioRestClient(Credentials.TwilioAccountSid, Credentials.TwilioAuthToken);
+        }
+
         public RestClient(TwilioRestClient client)
         {
             _client = client;

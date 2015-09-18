@@ -8,7 +8,6 @@ namespace CallTracking.Web.Controllers
     {
         private readonly IRepository<LeadSource> _repository;
 
-
         public DashboardController()
             : this(new LeadSourcesRepository()) { }
 

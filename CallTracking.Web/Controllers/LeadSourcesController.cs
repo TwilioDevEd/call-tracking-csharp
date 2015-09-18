@@ -3,7 +3,6 @@ using System.Web.Mvc;
 using CallTracking.Web.Domain.Twilio;
 using CallTracking.Web.Models;
 using CallTracking.Web.Models.Repository;
-using Twilio;
 using HttpStatusCodeResult = System.Web.Mvc.HttpStatusCodeResult;
 
 namespace CallTracking.Web.Controllers
@@ -14,7 +13,7 @@ namespace CallTracking.Web.Controllers
         private readonly IRestClient _restClient;
 
         public LeadSourcesController()
-            : this(new LeadSourcesRepository(), new RestClient(new TwilioRestClient(Credentials.TwilioAccountSid, Credentials.TwilioAuthToken))) { }
+            : this(new LeadSourcesRepository(), new RestClient()) { }
 
         public LeadSourcesController(IRepository<LeadSource> repository, IRestClient restClient)
         {
@@ -56,6 +55,7 @@ namespace CallTracking.Web.Controllers
             return View(leadSource);
         }
 
+        // POST: LeadSources/Edit/
         [HttpPost]
         public ActionResult Edit(
             [Bind(Include = "Id,Name,IncomingNumberNational,IncomingNumberInternational,ForwardingNumber")]
