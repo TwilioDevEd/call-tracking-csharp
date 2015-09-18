@@ -48,11 +48,11 @@ This project is built using the [ASP.NET MVC](http://www.asp.net/mvc) web framew
    </appSettings>
    ```
 
-3. Build the solution.
+4. Build the solution.
 
-4. Run `Update-Database` to execute the migrations.
+5. Run `Update-Database` to execute the migrations.
 
-5. Running the command Update-Database will run the migrations and run the Seed
+   Running the command Update-Database will run the migrations and run the Seed
    method, if you want to inspect this you can use SQL Server Object
    Explorer.
 
