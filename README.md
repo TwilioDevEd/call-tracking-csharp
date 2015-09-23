@@ -56,6 +56,6 @@ This project is built using the [ASP.NET MVC](http://www.asp.net/mvc) web framew
    method, if you want to inspect this you can use SQL Server Object
    Explorer.
 
-  ![Call Tracking Setup](https://raw.github.com/TwilioDevEd/call-tracking-csharp/master/call-tracking-setup.gif)
+  ![Call Tracking Setup](http://howtodocs.s3.amazonaws.com/call-tracking-setup.gif)
 
    That's it!
