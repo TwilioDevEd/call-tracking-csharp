@@ -1,12 +1,12 @@
 .chapter(data-title='Call Tracking with Twilio and ASP.NET MVC')
-  .step(data-file='CallTracking.Web/packages.config')
+  .step(data-file='CallTracking.Web/Models/LeadSource.cs')
     :markdown
       ## What does this thing do?
 
       This [ASP.NET MVC](http://www.asp.net/mvc) web application shows how you can
       use Twilio to track the effectiveness of different marketing channels.
 
-      ![Call tracking home page](http://howtodocs.s3.amazonaws.com/call-tracking-home.png)
+      ![Call tracking home page](//howtodocs.s3.amazonaws.com/call-tracking-home.png)
 
       This application has three main features:
 
@@ -65,7 +65,7 @@
       ## Display available phone numbers
 
       We display a form to the user on the app's home page which allows them to
-      search for a new phone number by area code. At controller level we use the
+      search for a new phone number by area code. At the controller level we use the
       `Twilio.RestClient` we created earlier to actually search for numbers. This
       will render the view that contains a list of numbers they can choose to buy.
 
@@ -127,7 +127,7 @@
 
       * [Controller.RedirectToAction Method](https://msdn.microsoft.com/en-us/library/system.web.mvc.controller.redirecttoaction.aspx)
 
-  .step(data-file='CallTracking.Web/Models/LeadSource.cs', data-highlight='6-15')
+  .step(data-file='CallTracking.Web/Models/LeadSource.cs')
     :markdown
       ## The LeadSource model
 
@@ -146,7 +146,7 @@
       * [Getting Started with Entity Framework 6 Code First using MVC
       5](https://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application)
 
-  .step(data-file='CallTracking.Web/Models/Lead.cs', data-highlight='3-11')
+  .step(data-file='CallTracking.Web/Models/Lead.cs')
     :markdown
       ## The Lead model
 
@@ -216,7 +216,7 @@
       using [jQuery](https://api.jquery.com/jquery.get/).
       We display the stats in colorful pie charts we create with [Chart.js](http://www.chartjs.org/). 
 
-      ![Call tracking charts](http://howtodocs.s3.amazonaws.com/call-tracking-charts.png)
+      ![Call tracking charts](//howtodocs.s3.amazonaws.com/call-tracking-charts.png)
 
       ---
 
