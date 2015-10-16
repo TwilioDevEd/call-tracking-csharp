@@ -1,7 +1,6 @@
 ﻿# Call Tracking on ASP.NET MVC
 
-[![Build
-status](https://ci.appveyor.com/api/projects/status/y759kny4y8q4av95/branch/master?svg=true)](https://ci.appveyor.com/project/acamino/call-tracking-csharp/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/k6yep2jsiwefbsw9?svg=true)](https://ci.appveyor.com/project/TwilioDevEd/call-tracking-csharp)
 
 Use Twilio to track the effectiveness of your different marketing campaigns.
 Learn how call tracking helps organizations in [these Twilio customer
