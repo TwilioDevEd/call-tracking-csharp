@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Threading.Tasks;
+using System.Web.Mvc;
 using CallTracking.Web.Domain.Twilio;
 
 namespace CallTracking.Web.Controllers
@@ -17,9 +18,9 @@ namespace CallTracking.Web.Controllers
         }
 
         // GET: AvailablePhoneNumbers
-        public ActionResult Index(string areaCode)
+        public async Task<ActionResult> Index(string areaCode)
         {
-            var phoneNumbers = _restClient.SearchPhoneNumbers(areaCode);
+            var phoneNumbers = await _restClient.SearchPhoneNumbersAsync(areaCode);
 
             return View(phoneNumbers);
         }
