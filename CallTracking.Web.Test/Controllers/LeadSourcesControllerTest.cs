@@ -7,6 +7,7 @@ using CallTracking.Web.Models.Repository;
 using Moq;
 using NUnit.Framework;
 using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace CallTracking.Web.Test.Controllers
 {
@@ -19,13 +20,12 @@ namespace CallTracking.Web.Test.Controllers
         public void Setup()
         {
             _mockRestClient = new Mock<IRestClient>();
-            var phoneNumber = new IncomingPhoneNumber
-            {
-                PhoneNumber = "+14159699064",
-                FriendlyName = "(415) 969-9064"
-            };
-            _mockRestClient.Setup(x => x.PurchasePhoneNumber(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(phoneNumber);
+            var phoneNumber =
+                IncomingPhoneNumberResource.FromJson(
+                    "{\"account_sid\": \"ACaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"address_requirements\": \"none\",\"api_version\": \"2010-04-01\",\"beta\": false,\"capabilities\": {\"mms\": true,\"sms\": false,\"voice\": true},\"date_created\": \"Thu, 30 Jul 2015 23:19:04 +0000\",\"date_updated\": \"Thu, 30 Jul 2015 23:19:04 +0000\",\"emergency_status\": \"Active\",\"emergency_address_sid\": \"ADaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"friendly_name\": \"(808) 925-5327\",\"phone_number\": \"+18089255327\",\"sid\": \"PNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"sms_application_sid\": \"\",\"sms_fallback_method\": \"POST\",\"sms_fallback_url\": \"\",\"sms_method\": \"POST\",\"sms_url\": \"\",\"status_callback\": \"\",\"status_callback_method\": \"POST\",\"trunk_sid\": null,\"uri\": \"/2010-04-01/Accounts/ACaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/IncomingPhoneNumbers/PNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.json\",\"voice_application_sid\": \"\",\"voice_caller_id_lookup\": false,\"voice_fallback_method\": \"POST\",\"voice_fallback_url\": null,\"voice_method\": \"POST\",\"voice_url\": null}");
+
+            _mockRestClient.Setup(x => x.PurchasePhoneNumberAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(phoneNumber);
 
             _mockRepository = new Mock<IRepository<LeadSource>>();
             _mockRepository.Setup(x => x.Create(It.IsAny<LeadSource>()));
@@ -34,21 +34,23 @@ namespace CallTracking.Web.Test.Controllers
 
 
         [Test]
-        public void Create_creates_a_lead_source()
+        public async void Create_creates_a_lead_source()
         {
             var controller = GetLeadSourcesController(_mockRepository.Object, _mockRestClient.Object);
 
-            controller.Create("+1 555 555 55555");
+            await controller.Create("+1 555 555 55555");
             _mockRepository.Verify(r => r.Create(It.IsAny<LeadSource>()), Times.Once);
         }
 
         [Test]
-        public void Create_redirects_to_edit_view_on_success()
+        public async void Create_redirects_to_edit_view_on_success()
         {
             var controller = GetLeadSourcesController(_mockRepository.Object, _mockRestClient.Object);
-            var result = (RedirectToRouteResult) controller.Create("+1 555 555 55555");
 
-            Assert.That(result.RouteValues["action"], Is.EqualTo("Edit"));
+            var result = await controller.Create("+1 555 555 55555");
+
+            var routeResult = (RedirectToRouteResult)result;
+            Assert.That(routeResult.RouteValues["action"], Is.EqualTo("Edit"));
         }
 
         [Test]
