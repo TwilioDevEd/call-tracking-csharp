@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Twilio.Base;
 using Twilio.Clients;
@@ -10,7 +11,7 @@ namespace CallTracking.Web.Domain.Twilio
 {
     public interface IRestClient
     {
-        Task<ResourceSet<LocalResource>> SearchPhoneNumbersAsync(string areaCode);
+        Task<IEnumerable<LocalResource>> SearchPhoneNumbersAsync(string areaCode);
         Task<IncomingPhoneNumberResource> PurchasePhoneNumberAsync(string phoneNumber, string applicationSid);
         Task<string> GetApplicationSidAsync();
     }
@@ -24,17 +25,16 @@ namespace CallTracking.Web.Domain.Twilio
             _client = new TwilioRestClient(Credentials.TwilioAccountSid, Credentials.TwilioAuthToken);
         }
 
-        public RestClient(ITwilioRestClient client)
+        public async Task<IEnumerable<LocalResource>> SearchPhoneNumbersAsync(string areaCode = "415")
         {
-            _client = client;
+            var localNumbers = await LocalResource.ReadAsync(
+                countryCode: "US", areaCode: int.Parse(areaCode), client: _client);
+
+            return localNumbers.ToList();
         }
 
-        public async Task<ResourceSet<LocalResource>> SearchPhoneNumbersAsync(string areaCode = "415")
-        {
-            return await LocalResource.ReadAsync(countryCode: "US", areaCode: int.Parse(areaCode), client: _client);
-        }
-
-        public async Task<IncomingPhoneNumberResource> PurchasePhoneNumberAsync(string phoneNumber, string applicationSid)
+        public async Task<IncomingPhoneNumberResource> PurchasePhoneNumberAsync(
+            string phoneNumber, string applicationSid)
         {
             return await IncomingPhoneNumberResource.CreateAsync(
                 voiceApplicationSid: applicationSid,

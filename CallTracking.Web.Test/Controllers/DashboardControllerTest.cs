@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using System.Web.Routing;
+﻿using System.Collections.Generic;
 using CallTracking.Web.Controllers;
 using CallTracking.Web.Models;
 using CallTracking.Web.Models.Repository;
 using Moq;
 using NUnit.Framework;
-using Twilio;
+using TestStack.FluentMVCTesting;
 
 namespace CallTracking.Web.Test.Controllers
 {
-    class DashboardControllerTest
+    public class DashboardControllerTest
     {
         [Test]
         public void Index_returns_a_list_of_lead_sources()
@@ -22,24 +16,12 @@ namespace CallTracking.Web.Test.Controllers
             var leadSources = new List<LeadSource>();
             var mockRepository = new Mock<IRepository<LeadSource>>();
             mockRepository.Setup(x => x.All()).Returns(leadSources);
-            var controller = GetDashboardController(mockRepository.Object);
 
-            var result = controller.Index() as ViewResult;
+            var controller = new DashboardController(mockRepository.Object);
 
-            Assert.That(result.ViewData.Model, Is.EqualTo(leadSources));
-        }
-
-        private static DashboardController GetDashboardController(IRepository<LeadSource> repository)
-        {
-            var controller = new DashboardController(repository);
-
-            controller.ControllerContext = new ControllerContext
-            {
-                Controller = controller,
-                RequestContext = new RequestContext(new MockHttpContext(), new RouteData())
-            };
-
-            return controller;
+            controller.WithCallTo(c => c.Index())
+                .ShouldRenderDefaultView()
+                .WithModel(leadSources);
         }
     }
 }
