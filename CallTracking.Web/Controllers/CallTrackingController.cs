@@ -2,11 +2,10 @@
 using CallTracking.Web.Models;
 using CallTracking.Web.Models.Repository;
 using Twilio.TwiML;
-using Twilio.TwiML.Mvc;
 
 namespace CallTracking.Web.Controllers
 {
-    public class CallTrackingController : TwilioController
+    public class CallTrackingController : Controller
     {
         private readonly IRepository<LeadSource> _leadSourcesRepository;
         private readonly IRepository<Lead> _leadsRepository;
@@ -33,10 +32,13 @@ namespace CallTracking.Web.Controllers
                 PhoneNumber = caller
             });
 
-            var response = new TwilioResponse();
-            response.Dial(leadSource.ForwardingNumber);
+            var response = new VoiceResponse();
+            var dial = new Dial();
+            dial.Number(leadSource.ForwardingNumber);
 
-            return TwiML(response);
+            response.Dial(dial);
+
+            return Content(response.ToString(), "text/xml");
         }
     }
 }
