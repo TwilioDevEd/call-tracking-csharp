@@ -51,6 +51,7 @@
       <HintPath>..\packages\Portable.JWT.1.0.5\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\JWT.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -129,7 +130,6 @@
     <Compile Include="Controllers\CallTrackingControllerTest.cs" />
     <Compile Include="Controllers\DashboardControllerTest.cs" />
     <Compile Include="Controllers\LeadSourcesControllerTest.cs" />
-    <Compile Include="Controllers\MockContext.cs" />
     <Compile Include="Controllers\StatisticsControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
