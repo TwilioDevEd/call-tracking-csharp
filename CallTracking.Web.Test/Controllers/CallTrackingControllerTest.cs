@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Web.Mvc;
-using System.Web.Routing;
 using System.Xml.XPath;
 using CallTracking.Web.Controllers;
 using CallTracking.Web.Models;

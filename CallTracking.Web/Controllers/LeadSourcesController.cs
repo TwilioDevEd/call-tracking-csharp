@@ -31,7 +31,7 @@ namespace CallTracking.Web.Controllers
 
             var leadSource = new LeadSource
             {
-                IncomingNumberNational = twilioNumber.FriendlyName?.ToString(),
+                IncomingNumberNational = twilioNumber.FriendlyName,
                 IncomingNumberInternational = twilioNumber.PhoneNumber?.ToString()
             };
 

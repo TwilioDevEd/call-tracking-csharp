@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using System.Web.Routing;
 using CallTracking.Web.Controllers;
 using CallTracking.Web.Models;
 using CallTracking.Web.Models.Repository;
@@ -10,7 +8,7 @@ using TestStack.FluentMVCTesting;
 
 namespace CallTracking.Web.Test.Controllers
 {
-    class DashboardControllerTest
+    public class DashboardControllerTest
     {
         [Test]
         public void Index_returns_a_list_of_lead_sources()
