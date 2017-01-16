@@ -36,7 +36,7 @@
       * [What is Call Tracking?](http://www.searchenginejournal.com/seo-beginner-guide-call-tracking-care/83173/)
 
   .step(data-file='CallTracking.Web/Domain/Twilio/RestClient.cs',
-  data-highlight='28-37')
+  data-highlight='28-34')
     :markdown
       ## Search for available phone numbers
 
@@ -82,11 +82,11 @@
 
 
   .step(data-file='CallTracking.Web/Domain/Twilio/RestClient.cs',
-  data-highlight='39-49')
+  data-highlight='36-44')
     :markdown
       ## Buy a phone number
 
-      Our `PurchasePhoneNumber` method takes a phone number as its
+      Our `PurchasePhoneNumberAsync` method takes a phone number as its
       sole parameter and uses our Twilio API client to purchase the
       available phone number our user chooses.
 
@@ -101,7 +101,7 @@
       Wiki](https://github.com/twilio/twilio-csharp/wiki/Twilio.Api)
 
   .step(data-file='CallTracking.Web/Domain/Twilio/RestClient.cs',
-  data-highlight='39-49')
+  data-highlight='36-44')
     :markdown
       ## Set webhook URLs in a TwiML Application
 
@@ -113,7 +113,7 @@
       ![Creating a TwiML app](http://howtodocs.s3.amazonaws.com/call-tracking-twiml-app.gif)
 
   .step(data-file='CallTracking.Web/Controllers/LeadSourcesController.cs',
-  data-highlight='24-39')
+  data-highlight='25-41')
     :markdown
       ## Associate a phone number with a lead source
 
@@ -166,7 +166,7 @@
       5](https://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application)
 
   .step(data-file='CallTracking.Web/Controllers/CallTrackingController.cs',
-  data-highlight='23-40')
+  data-highlight='22-42')
     :markdown
       ## Forward calls and create leads
 
@@ -250,6 +250,8 @@
       Appointment reminders allow you to automate the process of reaching out to
       your customers in advance of an upcoming appointment.
 
-      Thanks for checking out this tutorial! If you have any feedback to share
-      with us, we'd love to hear it. Tweet [@twilio](https://twitter.com/twilio)
-      to let us know what you think.
+      ### Did this help?
+
+      Thanks for checking out this tutorial! If you have any feedback
+      to share with us, we'd love to hear it.
+      [Contact the Twilio Developer Education Team](mailto:deved-oss@twilio.com) to let us know what you think.
