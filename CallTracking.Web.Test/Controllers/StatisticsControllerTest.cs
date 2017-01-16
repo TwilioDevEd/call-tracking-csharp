@@ -14,20 +14,22 @@ namespace CallTracking.Web.Test.Controllers
         [Test]
         public void LeadsBySource_returns_leads_grouped_by_source()
         {
-            var leadSource = new LeadSource {Id = 1, Name = "Downtown"};
             var leads = new List<Lead>
             {
-                new Lead {LeadSource = leadSource},
-                new Lead {LeadSource = leadSource}
+                new Lead {LeadSource = new LeadSource {Name = "Downtown"} },
+                new Lead {LeadSource = new LeadSource {Name = "Uptown"} }
             };
 
             var mockRepository = new Mock<IRepository<Lead>>();
             mockRepository.Setup(x => x.All()).Returns(leads);
 
             var controller = new StatisticsController(mockRepository.Object);
-
-            controller.WithCallTo(ctrl => ctrl.LeadsBySource())
-                .ShouldReturnJson(data => Assert.That(JArray.FromObject(data)[0]["label"].ToString(), Is.EqualTo("Downtown")));
+            controller.WithCallTo(c => c.LeadsBySource())
+                .ShouldReturnJson(data =>
+                {
+                    var firstLead = JArray.FromObject(data).First;
+                    Assert.That(firstLead.label.ToString(), Is.EqualTo("Downtown"));
+                });
         }
 
         [Test]
@@ -36,18 +38,19 @@ namespace CallTracking.Web.Test.Controllers
             var leads = new List<Lead>
             {
                 new Lead {City = "San Diego"},
-                new Lead {City = "San Diego"},
-                new Lead {City = "Modesto"}
+                new Lead {City = "San Francisco"}
             };
 
             var mockRepository = new Mock<IRepository<Lead>>();
             mockRepository.Setup(x => x.All()).Returns(leads);
 
             var controller = new StatisticsController(mockRepository.Object);
-
-            controller.WithCallTo(ctrl => ctrl.LeadsByCity())
-                .ShouldReturnJson(
-                    data => Assert.That(JArray.FromObject(data)[0]["label"].ToString(), Is.EqualTo("San Diego")));
+            controller.WithCallTo(c => c.LeadsByCity())
+                .ShouldReturnJson(data =>
+                {
+                    var firstLead = JArray.FromObject(data).First;
+                    Assert.That(firstLead.label.ToString(), Is.EqualTo("San Diego"));
+                });
         }
     }
 }

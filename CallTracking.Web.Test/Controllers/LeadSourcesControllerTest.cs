@@ -1,6 +1,4 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-using CallTracking.Web.Controllers;
+﻿using CallTracking.Web.Controllers;
 using CallTracking.Web.Domain.Twilio;
 using CallTracking.Web.Models;
 using CallTracking.Web.Models.Repository;
@@ -27,19 +25,6 @@ namespace CallTracking.Web.Test.Controllers
                 .ReturnsAsync(phoneNumber);
 
             _mockRepository = new Mock<IRepository<LeadSource>>();
-            _mockRepository.Setup(x => x.Create(It.IsAny<LeadSource>()));
-            _mockRepository.Setup(x => x.Update(It.IsAny<LeadSource>()));
-        }
-
-
-        [Test]
-        public void Create_creates_a_lead_source()
-        {
-            var controller = new LeadSourcesController(_mockRepository.Object, _mockRestClient.Object);
-
-            controller.WithCallTo(ctrl => ctrl.Create("+1 555 555 55555"));
-
-            _mockRepository.Verify(r => r.Create(It.IsAny<LeadSource>()), Times.Once);
         }
 
         [Test]
@@ -47,18 +32,10 @@ namespace CallTracking.Web.Test.Controllers
         {
             var controller = new LeadSourcesController(_mockRepository.Object, _mockRestClient.Object);
 
-            controller.WithCallTo(ctrl => ctrl.Create("+1 555 555 55555"))
-                .ShouldRedirectTo(ctrl => ctrl.Edit(1));
-        }
+            controller.WithCallTo(c => c.Create("+1 555 555 55555"))
+                .ShouldRedirectTo(c => c.Edit(1));
 
-        [Test]
-        public void Edit_edits_a_lead_source()
-        {
-            var controller = new LeadSourcesController(_mockRepository.Object, _mockRestClient.Object);
-
-            controller.WithCallTo(ctrl => ctrl.Edit(new LeadSource()));
-
-            _mockRepository.Verify(r => r.Update(It.IsAny<LeadSource>()), Times.Once);
+            _mockRepository.Verify(r => r.Create(It.IsAny<LeadSource>()), Times.Once);
         }
 
         [Test]
@@ -66,8 +43,10 @@ namespace CallTracking.Web.Test.Controllers
         {
             var controller = new LeadSourcesController(_mockRepository.Object, _mockRestClient.Object);
 
-            controller.WithCallTo(ctrl => ctrl.Edit(new LeadSource()))
-                .ShouldRedirectTo<DashboardController>(ctrl => ctrl.Index());
+            controller.WithCallTo(c => c.Edit(new LeadSource()))
+                .ShouldRedirectTo<DashboardController>(c => c.Index());
+
+            _mockRepository.Verify(r => r.Update(It.IsAny<LeadSource>()), Times.Once);
         }
     }
 }
