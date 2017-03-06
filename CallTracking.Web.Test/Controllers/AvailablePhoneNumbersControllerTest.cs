@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using System.Web.Routing;
 using CallTracking.Web.Controllers;
 using CallTracking.Web.Domain.Twilio;
 using Moq;
 using NUnit.Framework;
-using Twilio;
+using TestStack.FluentMVCTesting;
+using Twilio.Rest.Api.V2010.Account.AvailablePhoneNumberCountry;
 
 namespace CallTracking.Web.Test.Controllers
 {
@@ -14,27 +13,20 @@ namespace CallTracking.Web.Test.Controllers
         [Test]
         public void Index_returns_a_list_of_phone_numbers()
         {
-            var mockRestClient = new Mock<IRestClient>();
-            var phoneNumbers = new List<AvailablePhoneNumber>();
-            mockRestClient.Setup(x => x.SearchPhoneNumbers(It.IsAny<string>())).Returns(phoneNumbers);
-            var controller = GetAvailablePhoneNumbersController(mockRestClient.Object);
-
-            var result = controller.Index("415") as ViewResult;
-
-            Assert.That(result.ViewData.Model, Is.EqualTo(phoneNumbers));
-        }
-
-        private static AvailablePhoneNumbersController GetAvailablePhoneNumbersController(IRestClient client)
-        {
-            var controller = new AvailablePhoneNumbersController(client);
-
-            controller.ControllerContext = new ControllerContext
+            var localNumbers = new List<LocalResource>
             {
-                Controller = controller,
-                RequestContext = new RequestContext(new MockHttpContext(), new RouteData())
+                LocalResource.FromJson("{\"address_requirements\": \"none\"}")
             };
 
-            return controller;
+            var mockRestClient = new Mock<IRestClient>();
+            mockRestClient
+                .Setup(c => c.SearchPhoneNumbersAsync(It.IsAny<string>()))
+                .ReturnsAsync(localNumbers);
+
+            var controller = new AvailablePhoneNumbersController(mockRestClient.Object);
+            controller.WithCallTo(c => c.Index("415"))
+                .ShouldRenderDefaultView()
+                .WithModel(localNumbers);
         }
     }
 }

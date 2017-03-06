@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
 using CallTracking.Web.Controllers;
 using CallTracking.Web.Models;
 using CallTracking.Web.Models.Repository;
 using Moq;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using TestStack.FluentMVCTesting;
 
 namespace CallTracking.Web.Test.Controllers
 {
@@ -15,28 +14,22 @@ namespace CallTracking.Web.Test.Controllers
         [Test]
         public void LeadsBySource_returns_leads_grouped_by_source()
         {
-            var leadSource = new LeadSource {Id = 1, Name = "Downtown"};
             var leads = new List<Lead>
             {
-                new Lead {LeadSource = leadSource},
-                new Lead {LeadSource = leadSource}
+                new Lead {LeadSource = new LeadSource {Name = "Downtown"} },
+                new Lead {LeadSource = new LeadSource {Name = "Uptown"} }
             };
 
             var mockRepository = new Mock<IRepository<Lead>>();
             mockRepository.Setup(x => x.All()).Returns(leads);
 
             var controller = new StatisticsController(mockRepository.Object);
-            var result = controller.LeadsBySource();
-
-            var sb = new StringBuilder();
-            var mockResponse = new Mock<HttpResponseBase>();
-            mockResponse.Setup(s => s.Write(It.IsAny<string>())).Callback<string>(c => sb.Append(c));
-
-            var mockControllerContext = new Mock<ControllerContext>();
-            mockControllerContext.Setup(x => x.HttpContext.Response).Returns(mockResponse.Object);
-
-            result.ExecuteResult(mockControllerContext.Object);
-            Assert.AreEqual(@"[{""label"":""Downtown"",""value"":2}]", sb.ToString());
+            controller.WithCallTo(c => c.LeadsBySource())
+                .ShouldReturnJson(data =>
+                {
+                    var firstLead = JArray.FromObject(data).First;
+                    Assert.That(firstLead.label.ToString(), Is.EqualTo("Downtown"));
+                });
         }
 
         [Test]
@@ -45,25 +38,19 @@ namespace CallTracking.Web.Test.Controllers
             var leads = new List<Lead>
             {
                 new Lead {City = "San Diego"},
-                new Lead {City = "San Diego"},
-                new Lead {City = "Modesto"}
+                new Lead {City = "San Francisco"}
             };
 
             var mockRepository = new Mock<IRepository<Lead>>();
             mockRepository.Setup(x => x.All()).Returns(leads);
 
             var controller = new StatisticsController(mockRepository.Object);
-            var result = controller.LeadsByCity();
-
-            var sb = new StringBuilder();
-            var mockResponse = new Mock<HttpResponseBase>();
-            mockResponse.Setup(s => s.Write(It.IsAny<string>())).Callback<string>(c => sb.Append(c));
-
-            var mockControllerContext = new Mock<ControllerContext>();
-            mockControllerContext.Setup(x => x.HttpContext.Response).Returns(mockResponse.Object);
-
-            result.ExecuteResult(mockControllerContext.Object);
-            Assert.AreEqual(@"[{""label"":""San Diego"",""value"":2},{""label"":""Modesto"",""value"":1}]", sb.ToString());
+            controller.WithCallTo(c => c.LeadsByCity())
+                .ShouldReturnJson(data =>
+                {
+                    var firstLead = JArray.FromObject(data).First;
+                    Assert.That(firstLead.label.ToString(), Is.EqualTo("San Diego"));
+                });
         }
     }
 }

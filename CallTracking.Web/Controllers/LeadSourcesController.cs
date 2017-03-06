@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using CallTracking.Web.Domain.Twilio;
 using CallTracking.Web.Models;
@@ -23,14 +24,15 @@ namespace CallTracking.Web.Controllers
 
         // POST: LeadSources/Create
         [HttpPost]
-        public ActionResult Create(string phoneNumber)
+        public async Task<ActionResult> Create(string phoneNumber)
         {
-            var twilMLApplicationSid = Credentials.TwiMLApplicationSid ?? _restClient.GetApplicationSid();
-            var twilioNumber = _restClient.PurchasePhoneNumber(phoneNumber, twilMLApplicationSid);
+            var twiMLApplicationSid = Credentials.TwiMLApplicationSid ?? await _restClient.GetApplicationSidAsync();
+            var twilioNumber = await _restClient.PurchasePhoneNumberAsync(phoneNumber, twiMLApplicationSid);
+
             var leadSource = new LeadSource
             {
                 IncomingNumberNational = twilioNumber.FriendlyName,
-                IncomingNumberInternational = twilioNumber.PhoneNumber
+                IncomingNumberInternational = twilioNumber.PhoneNumber?.ToString()
             };
 
             _repository.Create(leadSource);
