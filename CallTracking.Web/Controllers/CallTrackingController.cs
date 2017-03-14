@@ -1,11 +1,12 @@
 ﻿using System.Web.Mvc;
 using CallTracking.Web.Models;
 using CallTracking.Web.Models.Repository;
+using Twilio.AspNet.Mvc;
 using Twilio.TwiML;
 
 namespace CallTracking.Web.Controllers
 {
-    public class CallTrackingController : Controller
+    public class CallTrackingController : TwilioController
     {
         private readonly IRepository<LeadSource> _leadSourcesRepository;
         private readonly IRepository<Lead> _leadsRepository;
@@ -38,7 +39,7 @@ namespace CallTracking.Web.Controllers
 
             response.Dial(dial);
 
-            return Content(response.ToString(), "text/xml");
+            return TwiML(response);
         }
     }
 }

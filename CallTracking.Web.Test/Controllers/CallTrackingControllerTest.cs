@@ -3,7 +3,7 @@ using System.Xml.XPath;
 using CallTracking.Web.Controllers;
 using CallTracking.Web.Models;
 using CallTracking.Web.Models.Repository;
-using FluentMvcTesting.Extensions;
+using CallTracking.Web.Test.Extensions;
 using Moq;
 using NUnit.Framework;
 using TestStack.FluentMVCTesting;
@@ -20,15 +20,15 @@ namespace CallTracking.Web.Test.Controllers
             var mockLeadSourcesRepository = new Mock<IRepository<LeadSource>>();
             var mockLeadsRepository = new Mock<IRepository<Lead>>();
             mockLeadSourcesRepository.Setup(x => x.FirstOrDefault(It.IsAny<Func<LeadSource, bool>>()))
-                .Returns(new LeadSource {ForwardingNumber = ForwardingNumber});
+                .Returns(new LeadSource { ForwardingNumber = ForwardingNumber });
 
             var controller = new CallTrackingController(
                 mockLeadSourcesRepository.Object, mockLeadsRepository.Object);
 
             controller.WithCallTo(c => c.ForwardCall("called", "caller", "city", "state"))
-                .ShouldReturnXmlResult(data =>
+                .ShouldReturnTwiMLResult(data =>
                 {
-                    Assert.That(data.XPathSelectElement("/Response/Dial").Value, Is.EqualTo(ForwardingNumber));
+                    StringAssert.Contains(ForwardingNumber, data.XPathSelectElement("/Response/Dial").Value);
                 });
 
             mockLeadsRepository.Verify(r => r.Create(It.IsAny<Lead>()), Times.Once);
