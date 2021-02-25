@@ -27,8 +27,10 @@ namespace CallTracking.Web.Domain.Twilio
 
         public async Task<IEnumerable<LocalResource>> SearchPhoneNumbersAsync(string areaCode = "415")
         {
+            var parsedAreaCode = areaCode.Equals("") ? (int?)null : int.Parse(areaCode);
+
             var localNumbers = await LocalResource.ReadAsync(
-                pathCountryCode: "US", areaCode: int.Parse(areaCode), client: _client);
+                pathCountryCode: "US", areaCode: parsedAreaCode, client: _client);
 
             return localNumbers.ToList();
         }

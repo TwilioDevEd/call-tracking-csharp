@@ -206,4 +206,8 @@ FakesAssemblies/
 *.opt
 
 # Project specific options
-CallTracking.Web/Web.config
+CallTracking.Web/Local.config
+
+# Libman
+**/Scripts/lib/
+!.gitkeep

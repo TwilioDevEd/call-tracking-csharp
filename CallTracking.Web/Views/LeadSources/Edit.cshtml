@@ -1,27 +1,27 @@
 ﻿@model CallTracking.Web.Models.LeadSource
 
-<div class="row">
+<div class="row p-3">
     <div class="page-header">
         <h1>Edit lead source for @Model.IncomingNumberNational</h1>
     </div>
     <div class="col-md-9">
-        @using (Html.BeginForm("Edit", "LeadSources", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+        @using (Html.BeginForm("Edit", "LeadSources", FormMethod.Post))
         {
-            <div class="form-group">
+            <div class="form-group row">
                 @Html.HiddenFor(x => x.Id)
                 @Html.HiddenFor(x => x.IncomingNumberNational)
                 @Html.HiddenFor(x => x.IncomingNumberInternational)
                 @Html.LabelFor(x => x.Name, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
                     @Html.TextBoxFor(x => x.Name, new {@class = "form-control"})
-                    <p class="help-block">E.g. "Downtown billboard"</p>
+                    <small class="form-text text-muted">E.g. "Downtown billboard"</small>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 @Html.LabelFor(x => x.ForwardingNumber, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(x => x.ForwardingNumber, new { @class = "form-control" })
-                    <p class="help-block">People who call this lead source will be connected with this phone number. Must include international prefix - e.g. +1 555 555 55555</p>
+                    <small class="form-text text-muted">People who call this lead source will be connected with this phone number. Must include international prefix - e.g. +1 555 555 55555</small>
                 </div>
             </div>
             <div class="form-group">
