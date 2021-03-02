@@ -3,6 +3,7 @@ using CallTracking.Web.Models;
 using CallTracking.Web.Models.Repository;
 using Twilio.AspNet.Mvc;
 using Twilio.TwiML;
+using Twilio.TwiML.Voice;
 
 namespace CallTracking.Web.Controllers
 {
@@ -37,7 +38,7 @@ namespace CallTracking.Web.Controllers
             var dial = new Dial();
             dial.Number(leadSource.ForwardingNumber);
 
-            response.Dial(dial);
+            response.Append(dial);
 
             return TwiML(response);
         }

@@ -27,8 +27,11 @@ namespace CallTracking.Web.Test.Controllers
             controller.WithCallTo(c => c.LeadsBySource())
                 .ShouldReturnJson(data =>
                 {
-                    var firstLead = JArray.FromObject(data).First;
-                    Assert.That(firstLead.label.ToString(), Is.EqualTo("Downtown"));
+                    System.Type type = data.GetType();
+                    var dataset = type.GetProperty("datasets").GetValue(data, null);
+                    System.Type typeDataset = dataset[0].GetType();
+                    Assert.That((string[])type.GetProperty("labels").GetValue(data, null), Is.EqualTo(new[] { "Downtown", "Uptown" }));
+                    Assert.That((int[])typeDataset.GetProperty("data").GetValue(dataset[0], null), Is.EqualTo(new[] { 1, 1 }));
                 });
         }
 
@@ -48,8 +51,11 @@ namespace CallTracking.Web.Test.Controllers
             controller.WithCallTo(c => c.LeadsByCity())
                 .ShouldReturnJson(data =>
                 {
-                    var firstLead = JArray.FromObject(data).First;
-                    Assert.That(firstLead.label.ToString(), Is.EqualTo("San Diego"));
+                    System.Type type = data.GetType();
+                    var dataset = type.GetProperty("datasets").GetValue(data, null);
+                    System.Type typeDataset = dataset[0].GetType();
+                    Assert.That((string[])type.GetProperty("labels").GetValue(data, null), Is.EqualTo(new[] { "San Diego", "San Francisco" }));
+                    Assert.That((int[])typeDataset.GetProperty("data").GetValue(dataset[0], null), Is.EqualTo(new[] { 1, 1 }));
                 });
         }
     }
